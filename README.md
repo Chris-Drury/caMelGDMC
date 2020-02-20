@@ -1,5 +1,5 @@
-# Welcome to the Generative Design in Minecraft Competition Repo
-Here you will find information about how to build artificial intelligence for minecraft.
+### GDMC Entry for COMP4303 by caMel @ Memorial University of Newfoundland
+# Work in Progress
 
-Before doing anything, [VISIT THE WIKI PAGE](http://github.com/mcgreentn/MCAI/wiki)
-
+## Setup
+[This WIKI](http://github.com/mcgreentn/MCAI/wiki) contains all the necessary information to setup the project
