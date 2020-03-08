@@ -1,7 +1,9 @@
+from random import randint, choice
+
+from buildingArrays import BuildingFactory
 import utilityFunctions
 from editortools.clone import CloneTool as ct
 from pymclevel import alphaMaterials
-from random import randint
 
 #inputs are taken from the user. Here I've just showing labels, as well as letting the user define
 # what the main creation material for the structures is
@@ -13,21 +15,17 @@ inputs = (
 
 directions = [[1, 0], [0, 1], [-1, 0], [0, -1]]  # right, up, left, down
 lastDirectionInt = 5 # lets use this so it can never back track...
+buildingLocations = [] # lets define a list of all locations that will need buildings
 
 # The required method for MCEdit. This function will be what runs the filter.
 def perform(level, box, options):
     filterOptions = options
     boundryBox = box
 
-    # # A quick demo on how to change blocks:
-    # for x in xrange(boundryBox.minx, boundryBox.maxx):
-    #     for y in xrange(boundryBox.miny, boundryBox.maxy):
-    #         for z in xrange(boundryBox.minz, boundryBox.maxz):
-    #             # (level, (Block ID to change to, target's Block ID), x, y, z)
-    #             utilityFunctions.setBlock(level, (1, 0), x, y, z)
-
     # Build a 2D planning grid (does not consider height)
     levelGrid = [[0] * (boundryBox.maxz- boundryBox.minz) for i in range(boundryBox.minx, boundryBox.maxx)]
+
+    # for step in xrange(0,4):
     generateLayout(levelGrid)
     
     xLoc = boundryBox.minz
@@ -41,15 +39,18 @@ def perform(level, box, options):
                 utilityFunctions.setBlock(level, (2, 0), xLoc, 64, zLoc)
             elif y == 1: 
                 f.write('.')
-                utilityFunctions.setBlock(level, (1, 0), xLoc, 64, zLoc)
+                utilityFunctions.setBlock(level, (45, 0), xLoc, 64, zLoc)
             elif y == 2:
                 f.write('-')
-                utilityFunctions.setBlock(level, (24, 0), xLoc, 64, zLoc)
+                utilityFunctions.setBlock(level, (13, 0), xLoc, 64, zLoc)
             zLoc += 1
         xLoc += 1
         f.write("\n")
     f.close()
 
+    # build houses
+    print("Generating buildings...")
+    bulidBuildings(level, boundryBox.minz, boundryBox.minx)
 
 # This will create the layout on a 2D grid. The layout consists of house plots and roads/paths between each plot
 def generateLayout(levelGrid):
@@ -64,7 +65,6 @@ def generateLayout(levelGrid):
 
     # begin branching a creating the rest of the village
     for houses in range(0,40):
-        print('generating phase:', houses - 4)
         # Generate a path of a random length in a random direction
         xEnd, zEnd = generatePath(levelGrid, xEnd, zEnd, randint(8, 40),  randint(0, 3))
 
@@ -80,6 +80,7 @@ def generateLayout(levelGrid):
 
 # This will generate the house plot
 def generateHousePlot(levelGrid, xDest, zDest, width):
+    buildingLocations.append([xDest, zDest, width * 2, 64])
     for x in xrange(xDest - width, xDest + width):
         for z in xrange(zDest - width, zDest + width):
             levelGrid[x][z] = 1
@@ -108,7 +109,7 @@ def generatePath(levelGrid, xStart, zStart, pathLength, directionInt):
     while (xStart + xDir*pathLength > len(levelGrid)) or (xStart - xDir*pathLength < 0 ) or \
           (zStart + zDir*pathLength > len(levelGrid[0])) or (zStart - zDir*pathLength < 0 ) or \
           ((lastDirectionInt != directionInt) and ((lastDirectionInt - directionInt) % 4 == 0 or (lastDirectionInt - directionInt) % 4 == 2)):
-        print("entering conflict loop...")
+          
         if (i == 10):
             xStart, zStart = generatePath(levelGrid, len(levelGrid) / 2, len(levelGrid[0]) / 2, pathLength, directionInt)
             return xStart, zStart
@@ -138,3 +139,30 @@ def generatePath(levelGrid, xStart, zStart, pathLength, directionInt):
         zStart += zDir
 
     return xStart, zStart
+
+def bulidBuildings(level, xLoc, zLoc):
+    building_factory = BuildingFactory()
+
+    for location in buildingLocations:
+        xDest = location[0]
+        zDest = location[1]
+        width = location[2] / 2
+        height= location[3] + 1
+
+        building = building_factory.choose_building(location[2])
+
+        if building:
+            for building_level in building:
+                x_idx = 0
+                for x in xrange(xDest - width, xDest + width):
+                    z_idx = 0
+                    for z in xrange(zDest - width, zDest + width):
+                        block_data = building_level[x_idx][z_idx].split(":")
+                        block = block_data[0]
+                        data = block_data[1]
+
+                        utilityFunctions.setBlock(level, (int(block), int(data)), xLoc + x, height, zLoc + z)
+                        
+                        z_idx += 1
+                    x_idx += 1
+                height += 1
