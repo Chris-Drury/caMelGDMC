@@ -13,47 +13,52 @@ inputs = (
 	("Creator: CAMEL", "label"),
 	)
 
+foliage = [6, 17, 18, 31, 32, 37, 38, 39, 40, 81, 83, 86, 99, 100, 103, 111, 127, 161, 162, 175]
 directions = [[1, 0], [0, 1], [-1, 0], [0, -1]]  # right, up, left, down
 lastDirectionInt = 5 # lets use this so it can never back track...
 buildingLocations = [] # lets define a list of all locations that will need buildings
 
+maxx = None; maxy = None; maxz = None; minx = None; miny = None; minz = None
+
 # The required method for MCEdit. This function will be what runs the filter.
 def perform(level, box, options):
+    global maxx, maxy, maxz, minx, miny, minz
     filterOptions = options
-    boundryBox = box
-
-    # Build a 2D planning grid (does not consider height)
-    levelGrid = [[0] * (boundryBox.maxz- boundryBox.minz) for i in range(boundryBox.minx, boundryBox.maxx)]
+    maxx = box.maxx; maxy = box.maxy; maxz = box.maxz
+    minx = box.minx; miny = box.miny; minz = box.minz
+    # Build a 2D planning grid
+    levelGrid = [[[0,0] for j in range(0, maxz - minz)] for i in range(minx, maxx)]
 
     # for step in xrange(0,4):
-    generateLayout(levelGrid)
-    
-    xLoc = boundryBox.minz
-    f= open("levelDemo.txt","w+")
+    generateLayout(level, levelGrid)
+
+    # Place the grid on the terrain
+    overlayGrid(levelGrid, level)
+
+def overlayGrid(levelGrid, level):
+    global minx, minz
+    xLoc = minx
     print("Generating terrain...")
     for x in levelGrid:
-        zLoc = boundryBox.minx
+        zLoc = minz
         for y in x:
-            if y == 0:
-                f.write('X')
-                utilityFunctions.setBlock(level, (2, 0), xLoc, 64, zLoc)
-            elif y == 1: 
-                f.write('.')
-                utilityFunctions.setBlock(level, (45, 0), xLoc, 64, zLoc)
-            elif y == 2:
-                f.write('-')
-                utilityFunctions.setBlock(level, (13, 0), xLoc, 64, zLoc)
+            layoutType = y[0]
+            height = y[1]
+            if layoutType == 1: 
+                # house plots
+                utilityFunctions.setBlock(level, (45, 0), xLoc, height, zLoc)
+            elif layoutType == 2:
+                # paths
+                utilityFunctions.setBlock(level, (13, 0), xLoc, 4, zLoc)
             zLoc += 1
         xLoc += 1
-        f.write("\n")
-    f.close()
 
     # build houses
     print("Generating buildings...")
-    bulidBuildings(level, boundryBox.minz, boundryBox.minx)
+    bulidBuildings(level, minz, minx)
 
 # This will create the layout on a 2D grid. The layout consists of house plots and roads/paths between each plot
-def generateLayout(levelGrid):
+def generateLayout(level, levelGrid):
     xSize = len(levelGrid)
     zSize = len(levelGrid[0])
 
@@ -61,14 +66,14 @@ def generateLayout(levelGrid):
     xEnd = xSize / 2
     zEnd = zSize / 2
     plotWidth = randint(4,8) / 2
-    generateHousePlot(levelGrid, xEnd, zEnd, plotWidth)
+    generateHousePlot(level, levelGrid, xEnd, zEnd, plotWidth)
 
     # begin branching a creating the rest of the village
     for houses in range(0,40):
         # Generate a path of a random length in a random direction
-        xEnd, zEnd = generatePath(levelGrid, xEnd, zEnd, randint(8, 40),  randint(0, 3))
+        xEnd, zEnd = generatePath(level, levelGrid, xEnd, zEnd, randint(8, 40),  randint(0, 3))
 
-        # Create the width of the next house plot and check that it will fit int he boundingBox
+        # Create the width of the next house plot and check that it will fit in the boundingBox
         plotWidth = randint(4,8) / 2
             # TODO: Ideally, this would be replaced by a function call that would check
         if (xEnd + plotWidth > xSize) or (xEnd - plotWidth < 0):
@@ -76,26 +81,39 @@ def generateLayout(levelGrid):
         elif (zEnd + plotWidth > zSize) or (zEnd - plotWidth < 0):
             continue
         elif checkHousePlot(levelGrid, xEnd, zEnd, plotWidth):
-            generateHousePlot(levelGrid, xEnd, zEnd, plotWidth)
+            generateHousePlot(level, levelGrid, xEnd, zEnd, plotWidth)
 
 # This will generate the house plot
-def generateHousePlot(levelGrid, xDest, zDest, width):
+def generateHousePlot(level, levelGrid, xDest, zDest, width):
+    global minx, minz
     buildingLocations.append([xDest, zDest, width * 2, 64])
     for x in xrange(xDest - width, xDest + width):
         for z in xrange(zDest - width, zDest + width):
-            levelGrid[x][z] = 1
+            levelGrid[x][z] = [1, getHeight(level, minx + x, minz + z)]
 
 # check that the house's plot will not override another plot
 def checkHousePlot(levelGrid, xDest, zDest, width):
     for x in xrange(xDest - width, xDest + width):
         for z in xrange(zDest - width, zDest + width):
-            if levelGrid[x][z] == 1:
+            if levelGrid[x][z][0] == 1:
                 return False
 
     return True
 
+# Get the hight of the terrain for a given X and Z
+def getHeight(level, x, z):
+    global maxy, miny, foliage
+    for y in xrange(maxy, miny, -1):
+        blockID = level.blockAt(x, y, z)
+        if blockID not in ([0] + foliage):
+            return y
+        elif blockID in foliage:
+            utilityFunctions.setBlock(level, (0, 0), x, y, z)
+
+    return 0
+
 # This will generate the paths, starting from the center of each house plot
-def generatePath(levelGrid, xStart, zStart, pathLength, directionInt):
+def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
     global directions
     global lastDirectionInt
 
@@ -111,7 +129,8 @@ def generatePath(levelGrid, xStart, zStart, pathLength, directionInt):
           ((lastDirectionInt != directionInt) and ((lastDirectionInt - directionInt) % 4 == 0 or (lastDirectionInt - directionInt) % 4 == 2)):
           
         if (i == 10):
-            xStart, zStart = generatePath(levelGrid, len(levelGrid) / 2, len(levelGrid[0]) / 2, pathLength, directionInt)
+            # this check exists to make sure that the algorith does not spend too much time finding a suitable direction
+            xStart, zStart = generatePath(level, levelGrid, len(levelGrid) / 2, len(levelGrid[0]) / 2, pathLength, directionInt)
             return xStart, zStart
         directionInt = randint(0,3) - lastDirectionInt % 3
         direction = directions[directionInt]
@@ -125,12 +144,12 @@ def generatePath(levelGrid, xStart, zStart, pathLength, directionInt):
     # iterate over the pathLength and ceate a 2 wide path
     for i in xrange(0, pathLength):
         try:
-            if levelGrid[xStart][zStart] != 1:
-                levelGrid[xStart][zStart] = 2
+            if levelGrid[xStart][zStart][0] != 1:
+                levelGrid[xStart][zStart] = [2, 64]
                 if zDir == 0:
-                    levelGrid[xStart][zStart + 1] = 2
+                    levelGrid[xStart][zStart + 1] = [2, 64]
                 elif xDir == 0:
-                    levelGrid[xStart + 1][zStart] = 2
+                    levelGrid[xStart + 1][zStart] = [2, 64]
         except Exception as e:
             print(str(e))
             
@@ -140,6 +159,7 @@ def generatePath(levelGrid, xStart, zStart, pathLength, directionInt):
 
     return xStart, zStart
 
+# Build the bulids per house plot
 def bulidBuildings(level, xLoc, zLoc):
     building_factory = BuildingFactory()
 
