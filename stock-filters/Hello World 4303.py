@@ -96,13 +96,11 @@ def normalizeBuildingLayout(level, box, levelGrid):
                     block = 3 if (block == 2) else block
 
                     while(height < med):
-                        print(x, height, z)
                         utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
                         height += 1
 
                 if (height > med):
                     while(level.blockAt(x + minx, height, z + minz) != 0) and (height > med):
-                        print(x, height, z)
                         utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
                         height -= 1
 
@@ -120,8 +118,7 @@ def generateLayout(level, levelGrid):
     # create the first house. For now, always place it in the middle of the plot
     xEnd = xSize / 2
     zEnd = zSize / 2
-    plotWidth = randint(4,8) / 2
-    generateHousePlot(level, levelGrid, xEnd, zEnd, plotWidth)
+    generateHousePlot(level, levelGrid, xEnd, zEnd, 2)
 
     # begin branching a creating the rest of the village
     for houses in range(0,40):
@@ -129,7 +126,7 @@ def generateLayout(level, levelGrid):
         xEnd, zEnd = generatePath(level, levelGrid, xEnd, zEnd, randint(8, 40),  randint(0, 3))
 
         # Create the width of the next house plot and check that it will fit in the boundingBox
-        plotWidth = randint(4,8) / 2
+        plotWidth = randint(6,10) / 2
             # TODO: Ideally, this would be replaced by a function call that would check
         if (xEnd + plotWidth > xSize) or (xEnd - plotWidth < 0):
             continue
@@ -224,9 +221,11 @@ def bulidBuildings(level, xLoc, zLoc):
         width = location[2] / 2
         height= location[3] + 1
 
-        building = building_factory.choose_building(location[2])
+        blueprint = building_factory.choose_building(location[2])
+        if blueprint:
+            building = blueprint["building"]
+            height += blueprint["height"]
 
-        if building:
             for building_level in building:
                 x_idx = 0
                 for x in xrange(xDest - width, xDest + width):
