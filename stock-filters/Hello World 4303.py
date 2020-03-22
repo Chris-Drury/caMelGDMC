@@ -56,13 +56,13 @@ def overlayGrid(levelGrid, level):
             height = y[1]
             if layoutType == 1: 
                 # house plots
-                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 45
+                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 2
 
                 utilityFunctions.setBlock(level, (block, 0), xLoc, height, zLoc)
             elif layoutType == 2:
                 # paths
                 height = getHeight(level, xLoc, zLoc, False)
-                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 13
+                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 208
 
                 utilityFunctions.setBlock(level, (block, 0), xLoc, height, zLoc)
             zLoc += 1
