@@ -57,10 +57,15 @@ def overlayGrid(levelGrid, level):
             height = y[1]
             if layoutType == 1: 
                 # house plots
-                utilityFunctions.setBlock(level, (45, 0), xLoc, height, zLoc)
+                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 45
+
+                utilityFunctions.setBlock(level, (block, 0), xLoc, height, zLoc)
             elif layoutType == 2:
                 # paths
-                utilityFunctions.setBlock(level, (13, 0), xLoc, 4, zLoc)
+                height = getHeight(level, xLoc, zLoc, False)
+                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 13
+
+                utilityFunctions.setBlock(level, (block, 0), xLoc, height, zLoc)
             zLoc += 1
         xLoc += 1
 
@@ -151,13 +156,13 @@ def checkHousePlot(levelGrid, xDest, zDest, width):
     return True
 
 # Get the hight of the terrain for a given X and Z
-def getHeight(level, x, z):
+def getHeight(level, x, z, house_plot=True):
     global maxy, miny, foliage
     for y in xrange(maxy, miny, -1):
         blockID = level.blockAt(x, y, z)
         if blockID not in ([0] + foliage):
             return y
-        elif blockID in foliage:
+        elif blockID in foliage and house:
             utilityFunctions.setBlock(level, (0, 0), x, y, z)
 
     return 0
