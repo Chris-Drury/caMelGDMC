@@ -8,9 +8,8 @@ from pymclevel import alphaMaterials
 #inputs are taken from the user. Here I've just showing labels, as well as letting the user define
 # what the main creation material for the structures is
 inputs = (
-	("CAMEL", "label"),
-	("Material", alphaMaterials.Cobblestone), # the material we want to use to build the mass of the structures
-	("Creator: CAMEL", "label"),
+	("COMP4303 Final Project", "label"),
+	("caMel", "label"),
 	)
 
 foliage = [6, 17, 18, 31, 32, 37, 38, 39, 40, 81, 83, 86, 99, 100, 103, 111, 127, 161, 162, 175]
@@ -118,7 +117,7 @@ def generateLayout(level, levelGrid):
     # create the first house. For now, always place it in the middle of the plot
     xEnd = xSize / 2
     zEnd = zSize / 2
-    generateHousePlot(level, levelGrid, xEnd, zEnd, 2)
+    generateHousePlot(level, levelGrid, xEnd, zEnd, 3)
 
     # begin branching a creating the rest of the village
     for houses in range(0,40):
@@ -126,7 +125,7 @@ def generateLayout(level, levelGrid):
         xEnd, zEnd = generatePath(level, levelGrid, xEnd, zEnd, randint(8, 40),  randint(0, 3))
 
         # Create the width of the next house plot and check that it will fit in the boundingBox
-        plotWidth = randint(6,10) / 2
+        plotWidth = randint(6,12) / 2
             # TODO: Ideally, this would be replaced by a function call that would check
         if (xEnd + plotWidth > xSize) or (xEnd - plotWidth < 0):
             continue
@@ -159,7 +158,7 @@ def getHeight(level, x, z, house_plot=True):
         blockID = level.blockAt(x, y, z)
         if blockID not in ([0] + foliage):
             return y
-        elif blockID in foliage and house:
+        elif blockID in foliage and house_plot:
             utilityFunctions.setBlock(level, (0, 0), x, y, z)
 
     return 0
@@ -225,7 +224,6 @@ def bulidBuildings(level, xLoc, zLoc):
         if blueprint:
             building = blueprint["building"]
             height += blueprint["height"]
-
             for building_level in building:
                 x_idx = 0
                 for x in xrange(xDest - width, xDest + width):
@@ -235,7 +233,8 @@ def bulidBuildings(level, xLoc, zLoc):
                         block = block_data[0]
                         data = block_data[1]
 
-                        utilityFunctions.setBlock(level, (int(block), int(data)), xLoc + x, height, zLoc + z)
+                        if block != "0":
+                            utilityFunctions.setBlock(level, (int(block), int(data)), xLoc + x, height, zLoc + z)
                         
                         z_idx += 1
                     x_idx += 1
