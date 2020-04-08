@@ -117,7 +117,7 @@ def generateLayout(level, levelGrid):
     # create the first house. For now, always place it in the middle of the plot
     xEnd = xSize / 2
     zEnd = zSize / 2
-    generateHousePlot(level, levelGrid, xEnd, zEnd, 3)
+    generateHousePlot(level, levelGrid, xEnd, zEnd, 6) # 3)
 
     # begin branching a creating the rest of the village
     for houses in range(0,40):
@@ -125,7 +125,7 @@ def generateLayout(level, levelGrid):
         xEnd, zEnd = generatePath(level, levelGrid, xEnd, zEnd, randint(8, 40),  randint(0, 3))
 
         # Create the width of the next house plot and check that it will fit in the boundingBox
-        plotWidth = randint(6,12) / 2
+        plotWidth = 6 # randint(6,12) / 2
             # TODO: Ideally, this would be replaced by a function call that would check
         if (xEnd + plotWidth > xSize) or (xEnd - plotWidth < 0):
             continue
