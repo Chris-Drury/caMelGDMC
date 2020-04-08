@@ -218,7 +218,7 @@ def bulidBuildings(level, xLoc, zLoc):
         xDest = location[0]
         zDest = location[1]
         width = location[2] / 2
-        height= location[3] + 1
+        height = location[3] + 1
 
         blueprint = building_factory.choose_building(location[2])
         if blueprint:
