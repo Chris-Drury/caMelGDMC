@@ -5,6 +5,8 @@ import utilityFunctions
 from editortools.clone import CloneTool as ct
 from pymclevel import alphaMaterials
 
+GLOBAL_SIZE = 12
+
 #inputs are taken from the user. Here I've just showing labels, as well as letting the user define
 # what the main creation material for the structures is
 inputs = (
@@ -111,13 +113,14 @@ def normalizeBuildingLayout(level, box, levelGrid):
 
 # This will create the layout on a 2D grid. The layout consists of house plots and roads/paths between each plot
 def generateLayout(level, levelGrid):
+    global GLOBAL_SIZE
     xSize = len(levelGrid)
     zSize = len(levelGrid[0])
 
     # create the first house. For now, always place it in the middle of the plot
     xEnd = xSize / 2
     zEnd = zSize / 2
-    generateHousePlot(level, levelGrid, xEnd, zEnd, 6) # 3)
+    generateHousePlot(level, levelGrid, xEnd, zEnd, GLOBAL_SIZE/2) # 3)
 
     # begin branching a creating the rest of the village
     for houses in range(0,40):
@@ -125,7 +128,7 @@ def generateLayout(level, levelGrid):
         xEnd, zEnd = generatePath(level, levelGrid, xEnd, zEnd, randint(8, 40),  randint(0, 3))
 
         # Create the width of the next house plot and check that it will fit in the boundingBox
-        plotWidth = 6 # randint(6,12) / 2
+        plotWidth = GLOBAL_SIZE / 2 # randint(6,12) / 2
             # TODO: Ideally, this would be replaced by a function call that would check
         if (xEnd + plotWidth > xSize) or (xEnd - plotWidth < 0):
             continue
