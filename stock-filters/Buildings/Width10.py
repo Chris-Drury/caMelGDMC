@@ -1,0 +1,269 @@
+from Buildings.Materials import LOG, FARMLAND, WATER, AIR, CARROTS, WHEAT, POTATOES, GRAVEL, GRASS_PATH, DIRT, GREENERY, \
+    FENCE, STAIRS_STONE, FLOWER, TORCH, LEAVES, STONE, STAIRS_COBBLESTONE, PLANK, BOOKSHELF, DOOR, STAIRS
+
+farm = {
+    "height": -1,
+    "building": [
+        [
+            [LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG],
+            [LOG, FARMLAND, WATER, FARMLAND, FARMLAND, FARMLAND, FARMLAND, WATER, FARMLAND, LOG],
+            [LOG, FARMLAND, WATER, FARMLAND, FARMLAND, FARMLAND, FARMLAND, WATER, FARMLAND, LOG],
+            [LOG, FARMLAND, WATER, FARMLAND, FARMLAND, FARMLAND, FARMLAND, WATER, FARMLAND, LOG],
+            [LOG, FARMLAND, WATER, FARMLAND, FARMLAND, FARMLAND, FARMLAND, WATER, FARMLAND, LOG],
+            [LOG, FARMLAND, WATER, FARMLAND, FARMLAND, FARMLAND, FARMLAND, WATER, FARMLAND, LOG],
+            [LOG, FARMLAND, WATER, FARMLAND, FARMLAND, FARMLAND, FARMLAND, WATER, FARMLAND, LOG],
+            [LOG, FARMLAND, WATER, FARMLAND, FARMLAND, FARMLAND, FARMLAND, WATER, FARMLAND, LOG],
+            [LOG, FARMLAND, WATER, FARMLAND, FARMLAND, FARMLAND, FARMLAND, WATER, FARMLAND, LOG],
+            [LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG],
+        ],
+        [
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, CARROTS, AIR, WHEAT, WHEAT, WHEAT, WHEAT, AIR, POTATOES, AIR],
+            [AIR, CARROTS, AIR, WHEAT, WHEAT, WHEAT, WHEAT, AIR, POTATOES, AIR],
+            [AIR, CARROTS, AIR, WHEAT, WHEAT, WHEAT, WHEAT, AIR, POTATOES, AIR],
+            [AIR, CARROTS, AIR, WHEAT, WHEAT, WHEAT, WHEAT, AIR, POTATOES, AIR],
+            [AIR, CARROTS, AIR, WHEAT, WHEAT, WHEAT, WHEAT, AIR, POTATOES, AIR],
+            [AIR, CARROTS, AIR, WHEAT, WHEAT, WHEAT, WHEAT, AIR, POTATOES, AIR],
+            [AIR, CARROTS, AIR, WHEAT, WHEAT, WHEAT, WHEAT, AIR, POTATOES, AIR],
+            [AIR, CARROTS, AIR, WHEAT, WHEAT, WHEAT, WHEAT, AIR, POTATOES, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ]
+    ]
+}
+
+tree = {
+    "height": -1,
+    "building": [
+        [
+            [AIR, AIR, GRAVEL, AIR, GRASS_PATH, GRAVEL, AIR, GRASS_PATH, AIR, AIR],
+            [GRASS_PATH, AIR, GRASS_PATH, GRAVEL, GRAVEL, GRASS_PATH, GRAVEL, AIR, GRASS_PATH, GRAVEL],
+            [GRASS_PATH, GRAVEL, GRASS_PATH, DIRT, DIRT, DIRT, AIR, GRAVEL, AIR, GRASS_PATH],
+            [AIR, GRASS_PATH, GRAVEL, DIRT, GRASS_PATH, DIRT, AIR, GRASS_PATH, AIR, AIR],
+            [AIR, AIR, GRAVEL, DIRT, DIRT, DIRT, GRASS_PATH, GRASS_PATH, AIR, GRAVEL],
+            [GRASS_PATH, GRAVEL, GRASS_PATH, GRASS_PATH, GRAVEL, GRASS_PATH, GRASS_PATH, GRAVEL, AIR, GRASS_PATH],
+            [GRAVEL, GRASS_PATH, GRAVEL, AIR, GRASS_PATH, GRAVEL, GRAVEL, GRASS_PATH, GRAVEL, AIR],
+            [AIR, GRASS_PATH, AIR, GRAVEL, GRAVEL, GRASS_PATH, GRAVEL, GRAVEL, AIR, GRASS_PATH],
+            [GRASS_PATH, AIR, GRASS_PATH, GRASS_PATH, GRASS_PATH, AIR, GRAVEL, AIR, GRAVEL, GRASS_PATH],
+            [GRAVEL, GRASS_PATH, GRAVEL, AIR, AIR, GRAVEL, AIR, GRAVEL, GRASS_PATH, AIR],
+        ],
+        [
+            [AIR, AIR, AIR, GREENERY["FERN"], AIR, AIR, AIR, AIR, FENCE, AIR],
+            [AIR, FENCE, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, STAIRS_STONE["E"], STAIRS_STONE["E"], STAIRS_STONE["E"], GREENERY["FERN"], AIR, GREENERY["FERN"],
+             AIR],
+            [AIR, AIR, AIR, STAIRS_STONE["S"], LOG, STAIRS_STONE["N"], GREENERY["FERN"], AIR, AIR, AIR],
+            [AIR, GREENERY["FERN"], AIR, STAIRS_STONE["W"], STAIRS_STONE["W"], STAIRS_STONE["W"], AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, GREENERY["FERN"], AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [GREENERY["FERN"], AIR, AIR, AIR, AIR, AIR, AIR, AIR, FENCE, AIR],
+            [AIR, GREENERY["FERN"], AIR, AIR, AIR, GREENERY["FERN"], AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, FLOWER["TULIP_ORANGE"], FENCE, AIR, AIR, AIR, AIR, AIR],
+        ],
+        [
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, LOG, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ],
+        [
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, TORCH["W"], AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, TORCH["N"], LOG, TORCH["S"], AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, TORCH["E"], AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ],
+        [
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, LOG, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ],
+        [
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, LEAVES, LEAVES, AIR, AIR, AIR, AIR],
+            [AIR, AIR, LEAVES, LEAVES, LEAVES, LEAVES, LEAVES, AIR, AIR, AIR],
+            [AIR, AIR, LEAVES, LEAVES, LOG, LEAVES, LEAVES, AIR, AIR, AIR],
+            [AIR, AIR, LEAVES, LEAVES, LEAVES, LEAVES, LEAVES, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, LEAVES, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ],
+        [
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, LEAVES, LEAVES, LEAVES, AIR, AIR, AIR, AIR],
+            [AIR, AIR, LEAVES, LEAVES, LEAVES, LEAVES, LEAVES, AIR, AIR, AIR],
+            [AIR, AIR, LEAVES, LEAVES, LOG, LEAVES, LEAVES, AIR, AIR, AIR],
+            [AIR, AIR, LEAVES, LEAVES, LEAVES, LEAVES, LEAVES, AIR, AIR, AIR],
+            [AIR, AIR, AIR, LEAVES, AIR, LEAVES, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ],
+        [
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, LEAVES, LEAVES, LEAVES, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, LEAVES, LOG, LEAVES, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, LEAVES, LEAVES, LEAVES, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ],
+        [
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, LEAVES, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, LEAVES, LEAVES, LEAVES, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, LEAVES, LEAVES, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ]
+    ]
+}
+
+library = {
+    "height": 0,
+    "building": [
+        [
+            [LOG, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, LOG],
+            [STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE],
+            [STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE],
+            [STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE],
+            [STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE],
+            [STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE, STONE],
+            [LOG, STONE, LOG, STONE, STONE, STONE, STONE, LOG, STONE, LOG],
+            [AIR, AIR, AIR, STONE, STONE, STONE, STONE, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, STAIRS_COBBLESTONE["W"], STAIRS_COBBLESTONE["W"], AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+        ],
+        [
+            [LOG, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, LOG],
+            [PLANK, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, PLANK],
+            [PLANK, BOOKSHELF, AIR, AIR, AIR, AIR, AIR, AIR, BOOKSHELF, PLANK],
+            [PLANK, BOOKSHELF, AIR, AIR, AIR, AIR, AIR, AIR, BOOKSHELF, PLANK],
+            [PLANK, BOOKSHELF, AIR, AIR, AIR, AIR, AIR, AIR, BOOKSHELF, PLANK],
+            [PLANK, BOOKSHELF, AIR, AIR, AIR, AIR, AIR, AIR, BOOKSHELF, PLANK],
+            [LOG, PLANK, LOG, AIR, AIR, AIR, AIR, LOG, PLANK, LOG],
+
+            [AIR, AIR, AIR, PLANK, DOOR["E_LOWER"], DOOR["E_LOWER"], PLANK, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR]
+        ],
+        [
+            [LOG, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, LOG],
+            [PLANK, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, BOOKSHELF, PLANK],
+            [PLANK, BOOKSHELF, AIR, AIR, AIR, AIR, AIR, AIR, BOOKSHELF, PLANK],
+            [PLANK, BOOKSHELF, AIR, AIR, AIR, AIR, AIR, AIR, BOOKSHELF, PLANK],
+            [PLANK, BOOKSHELF, AIR, AIR, AIR, AIR, AIR, AIR, BOOKSHELF, PLANK],
+            [PLANK, BOOKSHELF, AIR, AIR, AIR, AIR, AIR, AIR, BOOKSHELF, PLANK],
+            [LOG, PLANK, LOG, AIR, AIR, AIR, AIR, LOG, PLANK, LOG],
+
+            [AIR, AIR, AIR, PLANK, DOOR["LEFT_UPPER"], DOOR["RIGHT_UPPER"], PLANK, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR]
+        ],
+        [
+            [LOG, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, LOG],
+            [PLANK, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, PLANK],
+            [PLANK, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, PLANK],
+            [PLANK, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, PLANK],
+            [PLANK, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, PLANK],
+            [PLANK, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, PLANK],
+            [LOG, PLANK, LOG, AIR, AIR, AIR, AIR, LOG, PLANK, LOG],
+
+            [AIR, AIR, AIR, PLANK, PLANK, PLANK, PLANK, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR]
+        ],
+        [
+            [LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG],
+            [LOG, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, LOG],
+            [LOG, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, LOG],
+            [LOG, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, LOG],
+            [LOG, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, LOG],
+            [LOG, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, LOG],
+            [LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG, LOG],
+
+            [AIR, AIR, AIR, LOG, LOG, LOG, LOG, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR]
+        ],
+        [
+            [STAIRS["S"], PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, STAIRS["N"]],
+            [STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"]],
+            [STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"]],
+            [STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"]],
+            [STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"]],
+            [STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"]],
+            [STAIRS["S"], PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, STAIRS["N"]],
+
+            [AIR, AIR, AIR, STAIRS["S"], PLANK, PLANK, STAIRS["N"], AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR]
+        ],
+        [
+            [AIR, STAIRS["S"], PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, STAIRS["N"], AIR],
+            [AIR, STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"], AIR],
+            [AIR, STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"], AIR],
+            [AIR, STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"], AIR],
+            [AIR, STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"], AIR],
+            [AIR, STAIRS["S"], AIR, AIR, AIR, AIR, AIR, AIR, STAIRS["N"], AIR],
+            [AIR, STAIRS["S"], PLANK, PLANK, PLANK, PLANK, PLANK, PLANK, STAIRS["N"], AIR],
+
+            [AIR, AIR, AIR, AIR, STAIRS["S"], STAIRS["N"], AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR]
+        ],
+        [
+            [AIR, AIR, STAIRS["S"], PLANK, PLANK, PLANK, PLANK, STAIRS["N"], AIR, AIR],
+            [AIR, AIR, STAIRS["S"], AIR, AIR, AIR, AIR, STAIRS["N"], AIR, AIR],
+            [AIR, AIR, STAIRS["S"], AIR, AIR, AIR, AIR, STAIRS["N"], AIR, AIR],
+            [AIR, AIR, STAIRS["S"], AIR, AIR, AIR, AIR, STAIRS["N"], AIR, AIR],
+            [AIR, AIR, STAIRS["S"], AIR, AIR, AIR, AIR, STAIRS["N"], AIR, AIR],
+            [AIR, AIR, STAIRS["S"], AIR, AIR, AIR, AIR, STAIRS["N"], AIR, AIR],
+            [AIR, AIR, STAIRS["S"], PLANK, PLANK, PLANK, PLANK, STAIRS["N"], AIR, AIR],
+
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR]
+        ],
+        [
+            [AIR, AIR, AIR, STAIRS["S"], PLANK, PLANK, STAIRS["N"], AIR, AIR, AIR],
+            [AIR, AIR, AIR, STAIRS["S"], PLANK, PLANK, STAIRS["N"], AIR, AIR, AIR],
+            [AIR, AIR, AIR, STAIRS["S"], PLANK, PLANK, STAIRS["N"], AIR, AIR, AIR],
+            [AIR, AIR, AIR, STAIRS["S"], PLANK, PLANK, STAIRS["N"], AIR, AIR, AIR],
+            [AIR, AIR, AIR, STAIRS["S"], PLANK, PLANK, STAIRS["N"], AIR, AIR, AIR],
+            [AIR, AIR, AIR, STAIRS["S"], PLANK, PLANK, STAIRS["N"], AIR, AIR, AIR],
+            [AIR, AIR, AIR, STAIRS["S"], PLANK, PLANK, STAIRS["N"], AIR, AIR, AIR],
+
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR]
+        ]
+    ]
+}
