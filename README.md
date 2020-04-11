@@ -7,6 +7,6 @@
 ## Resources
 These links will help with buliding:
 
-[Vanilla village buildings](https://minecraft.gamepedia.com/Minecraft_Wiki:Projects/Structure_Blueprints/New_Village#Small_House_7)
+[Vanilla village buildings](https://minecraft.gamepedia.com/Village/Structure/Blueprints)
 
 [Block IDs](https://minecraft-ids.grahamedgecombe.com)
