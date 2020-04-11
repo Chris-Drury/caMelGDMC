@@ -21,7 +21,15 @@ woodTypePerBiome = {    # biome: tree data
     4: 2,               # forest: birch
     21: 3,              # jungle: jungle
     5: 1,               # taiga: spruce
-    27: 2               # birch forest: birch
+    27: 2,              # birch forest: birch
+    32: 1               # mega taiga: spruce
+}
+stairBlockTypePerBiome = {
+    4: 135,
+    21: 136,
+    5: 134,
+    27: 135,
+    32: 134
 }
 
 maxx = None; maxy = None; maxz = None; minx = None; miny = None; minz = None
@@ -217,6 +225,32 @@ def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
 
     return xStart, zStart
 
+
+# this function modifies wood, wood planks and stairs to the appropriate wood type based on the biome
+def modifyWoodToSuitBiome(block_data, biome_id, x, z):
+    block_id = block_data[0]
+    block_second_id = block_data[1]
+
+    if block_id == "17" or block_id == "5" or block_id == "53":
+        pprint(biome_id)
+        print('\n')
+
+        if block_id == "53":
+            if biome_id in stairBlockTypePerBiome:
+                print("Changing stair block type!\n")
+                return [stairBlockTypePerBiome[biome_id], block_second_id]
+            else:
+                return block_data
+        else:
+            if biome_id in woodTypePerBiome:
+                print("Changing block type!")
+                return [block_id, woodTypePerBiome[biome_id]]
+            else:
+                return block_data
+    else:
+        return block_data
+
+
 # Build the bulids per house plot
 def bulidBuildings(level, xLoc, zLoc):
     building_factory = BuildingFactory()
@@ -225,12 +259,13 @@ def bulidBuildings(level, xLoc, zLoc):
         xDest = location[0]
         zDest = location[1]
         width = location[2] / 2
-        height= location[3] + 1
+        height = location[3] + 1
 
         blueprint = building_factory.choose_building(location[2])
         if blueprint:
             building = blueprint["building"]
             height += blueprint["height"]
+            biome_id = 0
             for building_level in building:
                 x_idx = 0
                 for x in xrange(xDest - width, xDest + width):
@@ -238,16 +273,16 @@ def bulidBuildings(level, xLoc, zLoc):
                     for z in xrange(zDest - width, zDest + width):
                         block_data = building_level[x_idx][z_idx].split(":")
                         block = block_data[0]
-                        data = block_data[1]
+
+                        if x_idx == 0 and z_idx == 0:
+                            print("First block for this building")
+                            biome_id = level.biomeAt(xLoc + x, zLoc + z)
 
                         if block != "0":
-                            if block == "17":
-                                biome_id = level.biomeAt(xLoc + x, zLoc + z)
-                                pprint(biome_id)
-                                print('\n')
-                                if biome_id in woodTypePerBiome:
-                                    data = woodTypePerBiome[biome_id]
-                                    print("changing block type")
+                            print("Block ID: " + block + '\n')
+                            modified_block_data = modifyWoodToSuitBiome(block_data, biome_id, xLoc + x, zLoc + z)
+                            block = modified_block_data[0]
+                            data = modified_block_data[1]
 
                             utilityFunctions.setBlock(level, (int(block), int(data)), xLoc + x, height, zLoc + z)
 
