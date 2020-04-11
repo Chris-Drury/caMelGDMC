@@ -1,10 +1,8 @@
-from random import randint, choice
+from random import randint
 from pprint import pprint
 
 from buildingArrays import BuildingFactory
 import utilityFunctions
-from editortools.clone import CloneTool as ct
-from pymclevel import alphaMaterials
 
 #inputs are taken from the user. Here I've just showing labels, as well as letting the user define
 # what the main creation material for the structures is
@@ -19,17 +17,49 @@ lastDirectionInt = 5 # lets use this so it can never back track...
 buildingLocations = [] # lets define a list of all locations that will need buildings
 woodTypePerBiome = {    # biome: tree data
     4: 2,               # forest: birch
-    21: 3,              # jungle: jungle
     5: 1,               # taiga: spruce
+    12: 1,              # snowy tundra: spruce
+    13: 1,              # snowy mountains: spruce
+    19: 1,              # taiga hills: spruce
+    21: 3,              # jungle: jungle
+    22: 3,              # jungle hills: jungle
+    23: 3,              # jungle edge: jungle
     27: 2,              # birch forest: birch
-    32: 1               # mega taiga: spruce
+    28: 2,              # birch forest hills: birch
+    30: 1,              # snowy taiga: spruce
+    31: 1,              # snowy taiga hills: spruce
+    32: 1,              # mega taiga: spruce
+    133: 1,             # taiga mountains: spruce
+    149: 3,             # modified jungle: jungle
+    151: 3,             # modified jungle edge: jungle
+    155: 2,             # tall birch forest: birch
+    156: 2,             # tall birch hills: birch
+    158: 1,             # snowy taiga mountains: spruce
+    168: 3,             # bamboo jungle: jungle
+    169: 3,             # bamboo jungle hills: jungle
 }
 stairBlockTypePerBiome = {
-    4: 135,
-    21: 136,
-    5: 134,
-    27: 135,
-    32: 134
+    4: 135,             # forest: birch
+    5: 134,             # taiga: spruce
+    12: 134,            # snowy tundra: spruce
+    13: 134,            # snowy mountains: spruce
+    19: 134,            # taiga hills: spruce
+    21: 136,            # jungle: jungle
+    22: 136,            # jungle hills: jungle
+    23: 136,            # jungle edge: jungle
+    27: 135,            # birch forest: birch
+    28: 135,            # birch forest hills: birch
+    30: 134,            # snowy taiga: spruce
+    31: 134,            # snowy taiga hills: spruce
+    32: 134,            # mega taiga: spruce
+    133: 134,           # taiga mountains: spruce
+    149: 136,           # modified jungle: jungle
+    151: 136,           # modified jungle edge: jungle
+    155: 135,           # tall birch forest: birch
+    156: 135,           # tall birch hills: birch
+    158: 134,           # snowy taiga mountains: spruce
+    168: 136,           # bamboo jungle: jungle
+    169: 136,           # bamboo jungle hills: jungle
 }
 
 maxx = None; maxy = None; maxz = None; minx = None; miny = None; minz = None
