@@ -1,6 +1,4 @@
 from random import randint
-from pprint import pprint
-
 from buildingArrays import BuildingFactory
 import utilityFunctions
 
@@ -262,18 +260,13 @@ def modifyWoodToSuitBiome(block_data, biome_id, x, z):
     block_second_id = block_data[1]
 
     if block_id == "17" or block_id == "5" or block_id == "53":
-        pprint(biome_id)
-        print('\n')
-
         if block_id == "53":
             if biome_id in stairBlockTypePerBiome:
-                print("Changing stair block type!\n")
                 return [stairBlockTypePerBiome[biome_id], block_second_id]
             else:
                 return block_data
         else:
             if biome_id in woodTypePerBiome:
-                print("Changing block type!")
                 return [block_id, woodTypePerBiome[biome_id]]
             else:
                 return block_data
@@ -305,11 +298,9 @@ def bulidBuildings(level, xLoc, zLoc):
                         block = block_data[0]
 
                         if x_idx == 0 and z_idx == 0:
-                            print("First block for this building")
                             biome_id = level.biomeAt(xLoc + x, zLoc + z)
 
                         if block != "0":
-                            print("Block ID: " + block + '\n')
                             modified_block_data = modifyWoodToSuitBiome(block_data, biome_id, xLoc + x, zLoc + z)
                             block = modified_block_data[0]
                             data = modified_block_data[1]
