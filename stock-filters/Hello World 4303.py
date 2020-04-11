@@ -56,7 +56,7 @@ def overlayGrid(levelGrid, level):
             height = y[1]
             if layoutType == 1: 
                 # house plots
-                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 2
+                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else level.blockAt(xLoc, getHeight(level, xLoc, zLoc), zLoc)
 
                 utilityFunctions.setBlock(level, (block, 0), xLoc, height, zLoc)
             elif layoutType == 2:
@@ -89,25 +89,24 @@ def normalizeBuildingLayout(level, box, levelGrid):
         for x in range(xDest - width, xDest + width):
             for z in range(zDest - width, zDest + width):
                 height = levelGrid[x][z][1]
-                if (height < med):
 
-                    block = level.blockAt(x + minx, height, z + minz)
-                    block = 3 if (block == 2) else block
+                block = level.blockAt(x + minx, height, z + minz)
+                block = 5 if (block == 8 or block == 9) else block
 
-                    while(height < med):
-                        utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
-                        height += 1
+                while(height < med):
+                    utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
+                    height += 1
 
-                if (height > med):
-                    while(level.blockAt(x + minx, height, z + minz) != 0) and (height > med):
-                        utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
-                        height -= 1
-
+                while(level.blockAt(x + minx, height, z + minz) != 0) and (height > med):
+                    utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
+                    height -= 1
 
         # apply the median heights
         for x in range(xDest - width, xDest + width):
             for z in range(zDest - width, zDest + width):
                 levelGrid[x][z][1] = med                
+
+        levelTerrain(level, levelGrid, xDest, zDest, width)
 
 # This will create the layout on a 2D grid. The layout consists of house plots and roads/paths between each plot
 def generateLayout(level, levelGrid):
@@ -157,11 +156,31 @@ def getHeight(level, x, z, house_plot=True):
     for y in xrange(maxy, miny, -1):
         blockID = level.blockAt(x, y, z)
         if blockID not in ([0] + foliage):
+            if not house_plot:
+                utilityFunctions.setBlock(level, (0, 0), x, y+1, z)
             return y
         elif blockID in foliage and house_plot:
             utilityFunctions.setBlock(level, (0, 0), x, y, z)
 
     return 0
+
+# Level out the terrain around the plot to look more adapted
+def levelTerrain(level, levelGrid, xDest, zDest, width):
+    global minx, minz
+    i = 0
+    while (i < 2):
+        i += 1
+        j = i - 1
+        for x in xrange(xDest - width - i, xDest + width + j):
+            for z in [zDest - width - i, zDest + width + j]:
+                height = getHeight(level, minx + x, minz + z)
+                utilityFunctions.setBlock(level, (19, 0), x + minx, height, z + minz)
+
+        for z in xrange(zDest - width - i, zDest + width + j):
+            for x in [xDest - width - i, xDest + width + j]:
+                height = getHeight(level, minx + x, minz + z)
+                utilityFunctions.setBlock(level, (19, 0), x + minx, height, z + minz)
+
 
 # This will generate the paths, starting from the center of each house plot
 def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
