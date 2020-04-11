@@ -28,7 +28,7 @@ DOOR = {
     "S_LOWER_OPEN": "64:6",
     "N_LOWER_OPEN": "64:7",
     "LEFT_UPPER": "64:8",
-    "RIGHT_UPPER": "64:9",
+    "RIGHT_UPPER": "64:9"
 }
 FARMLAND = "60:0"
 FENCE = "85:0"

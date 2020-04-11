@@ -20,4 +20,3 @@ class BuildingFactory:
             return choice(self.buildings[width])
         except:
             return None
-
