@@ -1,4 +1,5 @@
 from random import randint, choice
+from pprint import pprint
 
 from buildingArrays import BuildingFactory
 import utilityFunctions
@@ -16,6 +17,12 @@ foliage = [6, 17, 18, 31, 32, 37, 38, 39, 40, 81, 83, 86, 99, 100, 103, 111, 127
 directions = [[1, 0], [0, 1], [-1, 0], [0, -1]]  # right, up, left, down
 lastDirectionInt = 5 # lets use this so it can never back track...
 buildingLocations = [] # lets define a list of all locations that will need buildings
+woodTypePerBiome = {    # biome: tree data
+    4: 2,               # forest: birch
+    21: 3,              # jungle: jungle
+    5: 1,               # taiga: spruce
+    27: 2               # birch forest: birch
+}
 
 maxx = None; maxy = None; maxz = None; minx = None; miny = None; minz = None
 
@@ -54,7 +61,7 @@ def overlayGrid(levelGrid, level):
         for y in x:
             layoutType = y[0]
             height = y[1]
-            if layoutType == 1: 
+            if layoutType == 1:
                 # house plots
                 block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 2
 
@@ -84,7 +91,7 @@ def normalizeBuildingLayout(level, box, levelGrid):
 
         med = heights[int(len(heights) / 2)]
         location[3] = med
-        
+
         # remove / add ground as necessary to make the plots look natural
         for x in range(xDest - width, xDest + width):
             for z in range(zDest - width, zDest + width):
@@ -107,7 +114,7 @@ def normalizeBuildingLayout(level, box, levelGrid):
         # apply the median heights
         for x in range(xDest - width, xDest + width):
             for z in range(zDest - width, zDest + width):
-                levelGrid[x][z][1] = med                
+                levelGrid[x][z][1] = med
 
 # This will create the layout on a 2D grid. The layout consists of house plots and roads/paths between each plot
 def generateLayout(level, levelGrid):
@@ -178,7 +185,7 @@ def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
     while (xStart + xDir*pathLength > len(levelGrid)) or (xStart - xDir*pathLength < 0 ) or \
           (zStart + zDir*pathLength > len(levelGrid[0])) or (zStart - zDir*pathLength < 0 ) or \
           ((lastDirectionInt != directionInt) and ((lastDirectionInt - directionInt) % 4 == 0 or (lastDirectionInt - directionInt) % 4 == 2)):
-          
+
         if (i == 10):
             # this check exists to make sure that the algorith does not spend too much time finding a suitable direction
             xStart, zStart = generatePath(level, levelGrid, len(levelGrid) / 2, len(levelGrid[0]) / 2, pathLength, directionInt)
@@ -203,7 +210,7 @@ def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
                     levelGrid[xStart + 1][zStart] = [2, 64]
         except Exception as e:
             print(str(e))
-            
+
         # increment the location to build the next paths
         xStart += xDir
         zStart += zDir
@@ -234,8 +241,16 @@ def bulidBuildings(level, xLoc, zLoc):
                         data = block_data[1]
 
                         if block != "0":
+                            if block == "17":
+                                biome_id = level.biomeAt(xLoc + x, zLoc + z)
+                                pprint(biome_id)
+                                print('\n')
+                                if biome_id in woodTypePerBiome:
+                                    data = woodTypePerBiome[biome_id]
+                                    print("changing block type")
+
                             utilityFunctions.setBlock(level, (int(block), int(data)), xLoc + x, height, zLoc + z)
-                        
+
                         z_idx += 1
                     x_idx += 1
                 height += 1
