@@ -97,17 +97,27 @@ def overlayGrid(levelGrid, level):
         for y in x:
             layoutType = y[0]
             height = y[1]
+            wood = [5,0]
+
             if layoutType == 1:
                 # house plots
-                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else level.blockAt(xLoc, getHeight(level, xLoc, zLoc), zLoc)
+                if ((level.blockAt(xLoc, height, zLoc) == 9) or (level.blockAt(xLoc, height, zLoc) == 8)):
+                    block_data = modifyWoodToSuitBiome(wood, level.biomeAt(xLoc, zLoc))
+                    print(block_data, level.biomeAt(xLoc, zLoc))
+                else:
+                    block_data = (level.blockAt(xLoc, getHeight(level, xLoc, zLoc), zLoc), 0)
 
-                utilityFunctions.setBlock(level, (block, 0), xLoc, height, zLoc)
+                utilityFunctions.setBlock(level, block_data, xLoc, height, zLoc)
             elif layoutType == 2:
                 # paths
                 height = getHeight(level, xLoc, zLoc, False)
-                block = 5 if (level.blockAt(xLoc, height, zLoc) == 9) else 208
+                if ((level.blockAt(xLoc, height, zLoc) == 9) or (level.blockAt(xLoc, height, zLoc) == 8)):
+                    block_data = modifyWoodToSuitBiome(wood, level.biomeAt(xLoc, zLoc))
+                    print(block_data, level.biomeAt(xLoc, zLoc))
+                else:
+                    block_data = (208, 0)
 
-                utilityFunctions.setBlock(level, (block, 0), xLoc, height, zLoc)
+                utilityFunctions.setBlock(level, tuple(block_data), xLoc, height, zLoc)
             zLoc += 1
         xLoc += 1
 
@@ -134,10 +144,14 @@ def normalizeBuildingLayout(level, box, levelGrid):
                 height = levelGrid[x][z][1]
 
                 block = level.blockAt(x + minx, height, z + minz)
-                block = 5 if (block == 8 or block == 9) else block
+                data = 0
+                if (block == 8 or block == 9):
+                    modified_block_data = modifyWoodToSuitBiome([5,0], level.biomeAt(minx + x, minz + z))
+                    block = modified_block_data[0]
+                    data = modified_block_data[1]
 
                 while(height < med):
-                    utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
+                    utilityFunctions.setBlock(level, (block, data), x + minx, height, z + minz)
                     height += 1
 
                 while(level.blockAt(x + minx, height, z + minz) != 0) and (height > med):
@@ -274,7 +288,7 @@ def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
 
 
 # this function modifies wood, wood planks and stairs to the appropriate wood type based on the biome
-def modifyWoodToSuitBiome(block_data, biome_id, x, z):
+def modifyWoodToSuitBiome(block_data, biome_id):
     block_id = block_data[0]
     block_second_id = block_data[1]
 
@@ -320,7 +334,7 @@ def bulidBuildings(level, xLoc, zLoc):
                             biome_id = level.biomeAt(xLoc + x, zLoc + z)
 
                         if block != "0":
-                            modified_block_data = modifyWoodToSuitBiome(block_data, biome_id, xLoc + x, zLoc + z)
+                            modified_block_data = modifyWoodToSuitBiome(block_data, biome_id)
                             block = modified_block_data[0]
                             data = modified_block_data[1]
 
