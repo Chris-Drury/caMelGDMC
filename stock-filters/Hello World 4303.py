@@ -97,13 +97,12 @@ def overlayGrid(levelGrid, level):
         for y in x:
             layoutType = y[0]
             height = y[1]
-            wood = [5,0]
+            wood = ["5","0"]
 
             if layoutType == 1:
                 # house plots
                 if ((level.blockAt(xLoc, height, zLoc) == 9) or (level.blockAt(xLoc, height, zLoc) == 8)):
                     block_data = modifyWoodToSuitBiome(wood, level.biomeAt(xLoc, zLoc))
-                    print(block_data, level.biomeAt(xLoc, zLoc))
                 else:
                     block_data = (level.blockAt(xLoc, getHeight(level, xLoc, zLoc), zLoc), 0)
 
@@ -113,7 +112,6 @@ def overlayGrid(levelGrid, level):
                 height = getHeight(level, xLoc, zLoc, False)
                 if ((level.blockAt(xLoc, height, zLoc) == 9) or (level.blockAt(xLoc, height, zLoc) == 8)):
                     block_data = modifyWoodToSuitBiome(wood, level.biomeAt(xLoc, zLoc))
-                    print(block_data, level.biomeAt(xLoc, zLoc))
                 else:
                     block_data = (208, 0)
 
@@ -163,7 +161,7 @@ def normalizeBuildingLayout(level, box, levelGrid):
             for z in range(zDest - width, zDest + width):
                 levelGrid[x][z][1] = med
 
-        levelTerrain(level, levelGrid, xDest, zDest, width)
+        # levelTerrain(level, levelGrid, xDest, zDest, width)
 
 # This will create the layout on a 2D grid. The layout consists of house plots and roads/paths between each plot
 def generateLayout(level, levelGrid):
@@ -229,12 +227,12 @@ def levelTerrain(level, levelGrid, xDest, zDest, width):
         i += 1
         j = i - 1
         for x in xrange(xDest - width - i, xDest + width + j):
-            for z in [zDest - width - i, zDest + width + j]:
+            for z in [zDest - width - i, zDest + width]:
                 height = getHeight(level, minx + x, minz + z)
                 utilityFunctions.setBlock(level, (19, 0), x + minx, height, z + minz)
 
         for z in xrange(zDest - width - i, zDest + width + j):
-            for x in [xDest - width - i, xDest + width + j]:
+            for x in [xDest - width - i, xDest + width]:
                 height = getHeight(level, minx + x, minz + z)
                 utilityFunctions.setBlock(level, (19, 0), x + minx, height, z + minz)
 
