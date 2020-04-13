@@ -119,6 +119,25 @@ def overlayGrid(levelGrid, level):
             zLoc += 1
         xLoc += 1
 
+
+def partitionList(array, startIndex, endIndex):
+    pivot = array[endIndex]
+    i = startIndex
+    for j in range(startIndex, endIndex):
+        if array[j][3] < pivot[3]:
+            array[i], array[j] = array[j], array[i]
+            i += 1
+    array[i], array[endIndex] = array[endIndex], array[i]
+    return i
+
+
+def sortBuildingLocations(array, startIndex, endIndex):
+    if startIndex < endIndex:
+        point = partitionList(array, startIndex, endIndex)
+        sortBuildingLocations(array, startIndex, point - 1)
+        sortBuildingLocations(array, point + 1, endIndex)
+
+
 # This will level out all building plots
 def normalizeBuildingLayout(level, box, levelGrid):
     global minx, minz
@@ -160,6 +179,10 @@ def normalizeBuildingLayout(level, box, levelGrid):
         for x in range(xDest - width, xDest + width):
             for z in range(zDest - width, zDest + width):
                 levelGrid[x][z][1] = med
+
+        # sort buildingLocation by median height
+        sortBuildingLocations(buildingLocations, 0, len(buildingLocations) - 1)
+        buildingLocations.reverse()
 
         # levelTerrain(level, levelGrid, xDest, zDest, width)
 
