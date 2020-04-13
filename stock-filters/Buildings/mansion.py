@@ -176,3 +176,7 @@ mansion = {
         ]
     ]
 }
+
+
+def generate_mansions():
+    return [mansion]

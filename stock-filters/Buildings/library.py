@@ -121,3 +121,7 @@ library = {
         ]
     ]
 }
+
+
+def generate_libraries():
+    return [library]

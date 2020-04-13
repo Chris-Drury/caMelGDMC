@@ -1,6 +1,6 @@
 from Buildings.material import AIR, LOG, BRICKS, PLANK, STAIRS_STONE, STAIRS, BED, DOOR, WOOD, GLASS, TORCH
 
-house1 = {
+house_brick = {
     "height": 0,
     "building": [
         [
@@ -75,3 +75,8 @@ house1 = {
         ]
     ]
 }
+
+
+def generate_houses_brick():
+    return [house_brick]
+

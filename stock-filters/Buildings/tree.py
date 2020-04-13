@@ -26,7 +26,7 @@ tree = {
             [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],
             [GREENERY["FERN"], AIR, AIR, AIR, AIR, AIR, AIR, AIR, FENCE, AIR],
             [AIR, GREENERY["FERN"], AIR, AIR, AIR, GREENERY["FERN"], AIR, AIR, AIR, AIR],
-            [AIR, AIR, AIR, FLOWER["TULIP_ORANGE"], FENCE, AIR, AIR, AIR, AIR, AIR],
+            [AIR, AIR, AIR, FLOWER["TULIP"], FENCE, AIR, AIR, AIR, AIR, AIR],
         ],
         [
             [AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR, AIR],

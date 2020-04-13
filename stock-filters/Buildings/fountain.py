@@ -61,3 +61,7 @@ fountain = {
         ]
     ]
 }
+
+
+def generate_fountains():
+    return [fountain]
