@@ -78,6 +78,14 @@ STAIRS_COBBLESTONE = {
 }
 STONE = "4:0"
 TERRACOTTA = "159:0"
+terracotta = {
+    "WHITE": "159:0",
+    "YELLOW": "159:4",
+    "GREEN": "159:5",
+    "BLUE": "159:11",
+    "RED": "159:14"
+}
+
 TORCH = {
     "E": "50:1",
     "W": "50:2",

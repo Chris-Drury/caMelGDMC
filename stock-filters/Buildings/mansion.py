@@ -1,4 +1,4 @@
-from Buildings.Materials import AIR, DIRT, BRICKS, LOG, STAIRS_STONE, BED, DOOR, GLASS, TORCH, PLANK, WOOD
+from Buildings.material import AIR, DIRT, BRICKS, LOG, STAIRS_STONE, BED, DOOR, GLASS, TORCH, PLANK, WOOD
 
 mansion = {
     "height": -1,
