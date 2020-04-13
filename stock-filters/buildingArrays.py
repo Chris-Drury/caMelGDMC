@@ -1,9 +1,12 @@
 from random import choice
 
-from Buildings.Width10 import farm, library
-from Buildings.Width12 import mansion
-from Buildings.Width6 import flowers, fountain
-from Buildings.Width8 import house1, house2
+from Buildings.library import library
+from Buildings.farm import farm
+from Buildings.mansion import mansion
+from Buildings.flowers import flowers
+from Buildings.fountain import fountain
+from Buildings.house2 import house2
+from Buildings.house1 import house1
 
 
 class BuildingFactory:
