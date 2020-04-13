@@ -33,8 +33,14 @@ DOOR = {
 FARMLAND = "60:0"
 FENCE = "85:0"
 FLOWER = {
+    "DANDELION": "37:0",
     "POPPY": "38:0",
-    "TULIP_ORANGE": "38:5"
+    "ORCHID": "38:1",
+    "ALLIUM": "38:2",
+    "AZURE_BLAST": "38:3",
+    "TULIP": "38:5",
+    "DAISY": "38:8"
+
 }
 GLASS = "20:0"
 GRASS = "2:0"
@@ -77,7 +83,14 @@ STAIRS_COBBLESTONE = {
     "N_FLIPPED": "67:11"
 }
 STONE = "4:0"
-TERRACOTTA = "159:0"
+TERRACOTTA = {
+    "WHITE": "159:0",
+    "YELLOW": "159:4",
+    "GREEN": "159:5",
+    "BLUE": "159:11",
+    "RED": "159:14"
+}
+
 TORCH = {
     "E": "50:1",
     "W": "50:2",
