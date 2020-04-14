@@ -79,6 +79,10 @@ def perform(level, box, options):
     print("Smoothing out house plots...")
     normalizeBuildingLayout(level, box, levelGrid)
 
+    # smooth out the terrain around plots
+    print("smoothing out the terrain...")
+    levelTerrain(level, levelGrid)
+
     # Place the grid on the terrain
     print("Generating terrain...")
     overlayGrid(levelGrid, level)
@@ -155,36 +159,9 @@ def normalizeBuildingLayout(level, box, levelGrid):
         med = heights[int(len(heights) / 2)]
         location[3] = med
 
-        # remove / add ground as necessary to make the plots look natural
-        for x in range(xDest - width, xDest + width):
-            for z in range(zDest - width, zDest + width):
-                height = levelGrid[x][z][1]
-
-                block = level.blockAt(x + minx, height, z + minz)
-                data = 0
-                if (block == 8 or block == 9):
-                    modified_block_data = modifyWoodToSuitBiome([5,0], level.biomeAt(minx + x, minz + z))
-                    block = modified_block_data[0]
-                    data = modified_block_data[1]
-
-                while(height < med):
-                    utilityFunctions.setBlock(level, (block, data), x + minx, height, z + minz)
-                    height += 1
-
-                while(level.blockAt(x + minx, height, z + minz) != 0) and (height > med):
-                    utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
-                    height -= 1
-
-        # apply the median heights
-        for x in range(xDest - width, xDest + width):
-            for z in range(zDest - width, zDest + width):
-                levelGrid[x][z][1] = med
-
         # sort buildingLocation by median height
         sortBuildingLocations(buildingLocations, 0, len(buildingLocations) - 1)
         buildingLocations.reverse()
-
-        # levelTerrain(level, levelGrid, xDest, zDest, width)
 
 # This will create the layout on a 2D grid. The layout consists of house plots and roads/paths between each plot
 def generateLayout(level, levelGrid):
@@ -242,24 +219,6 @@ def getHeight(level, x, z, house_plot=True):
 
     return 0
 
-# Level out the terrain around the plot to look more adapted
-def levelTerrain(level, levelGrid, xDest, zDest, width):
-    global minx, minz
-    i = 0
-    while (i < 2):
-        i += 1
-        j = i - 1
-        for x in xrange(xDest - width - i, xDest + width + j):
-            for z in [zDest - width - i, zDest + width]:
-                height = getHeight(level, minx + x, minz + z)
-                utilityFunctions.setBlock(level, (19, 0), x + minx, height, z + minz)
-
-        for z in xrange(zDest - width - i, zDest + width + j):
-            for x in [xDest - width - i, xDest + width]:
-                height = getHeight(level, minx + x, minz + z)
-                utilityFunctions.setBlock(level, (19, 0), x + minx, height, z + minz)
-
-
 # This will generate the paths, starting from the center of each house plot
 def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
     global directions
@@ -307,6 +266,80 @@ def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
 
     return xStart, zStart
 
+# Level out the terrain around the plot to look more adapted
+def levelTerrain(level, levelGrid):
+    global minx, minz
+    for location in buildingLocations:
+        xDest = location[0]
+        zDest = location[1]
+        width = location[2] / 2
+
+        i = 0
+        q = 18
+        while (i < 3):
+            i += 1
+            j = i - 1
+            q += 1
+            for x in xrange(xDest - width - i, xDest + width + i):
+                for z in xrange(zDest - width - i, zDest + width + i):
+                    if ((x < xDest - width - j) or (x > xDest + width + j - 1)) or ((z < zDest - width - j) or (z > zDest + width + j - 1)):
+                        if (x > 0 and x < len(levelGrid)) and (z > 0 and z < len(levelGrid[0])):
+                            height = getHeight(level, minx + x, minz + z, False)
+                            modify = determineNeighbourHeights(level, minx + x, minz + z, height)
+                            block = level.blockAt(x + minx, height, z + minz)
+
+                            newHeight = getHeight(level, minx + x, minz + z) + modify
+                            levelGrid[x][z][1] = newHeight
+                            while(height < newHeight):
+                                utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
+                                height += 1
+
+                            while(level.blockAt(x + minx, height, z + minz) != 0) and (height > newHeight):
+                                utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
+                                height -= 1
+                        
+        height = location[3]
+
+        # remove / add ground as necessary to make the plots look natural
+        for x in range(xDest - width, xDest + width):
+            for z in range(zDest - width, zDest + width):
+                height = levelGrid[x][z][1]
+                med = location[3]
+
+                block = level.blockAt(x + minx, height, z + minz)
+                data = 0
+                if (block == 8 or block == 9):
+                    modified_block_data = modifyWoodToSuitBiome([5,0], level.biomeAt(minx + x, minz + z))
+                    block = modified_block_data[0]
+                    data = modified_block_data[1]
+
+                while(height < med):
+                    utilityFunctions.setBlock(level, (block, data), x + minx, height, z + minz)
+                    height += 1
+
+                while(level.blockAt(x + minx, height, z + minz) != 0) and (height > med):
+                    utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
+                    height -= 1
+                    
+        # apply the median heights
+        for x in range(xDest - width, xDest + width):
+            for z in range(zDest - width, zDest + width):
+                levelGrid[x][z][1] = med
+
+def determineNeighbourHeights(level, midX, midZ, height):
+    for x in xrange(midX - 1, midX + 1):
+        for z in xrange(midZ - 1, midZ + 1):
+            block = level.blockAt(x, height, z)
+            if block == 0:
+                block = level.blockAt(x , height - 1, z)
+                if block == 0:
+                    return -1  
+            else:
+                block = level.blockAt(x, height + 1, z)
+                if block != 0:
+                    return 1
+
+    return 0
 
 # this function modifies wood, wood planks and stairs to the appropriate wood type based on the biome
 def modifyWoodToSuitBiome(block_data, biome_id):
