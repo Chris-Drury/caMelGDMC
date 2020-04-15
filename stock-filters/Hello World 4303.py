@@ -1,6 +1,7 @@
-from random import randint
 from buildingArrays import BuildingFactory
+from random import randint
 import utilityFunctions
+import time
 
 #inputs are taken from the user. Here I've just showing labels, as well as letting the user define
 # what the main creation material for the structures is
@@ -65,6 +66,8 @@ maxx = None; maxy = None; maxz = None; minx = None; miny = None; minz = None
 # The required method for MCEdit. This function will be what runs the filter.
 def perform(level, box, options):
     global maxx, maxy, maxz, minx, miny, minz
+
+    start = time.time()
     filterOptions = options
     maxx = box.maxx; maxy = box.maxy; maxz = box.maxz
     minx = box.minx; miny = box.miny; minz = box.minz
@@ -92,6 +95,9 @@ def perform(level, box, options):
     bulidBuildings(level, minx, minz)
 
     print("Done!")
+    end = time.time()
+    print(end - start)
+
 
 # Apply the levelGrid to the terrain
 def overlayGrid(levelGrid, level):
@@ -301,27 +307,27 @@ def levelTerrain(level, levelGrid):
                 # apply the median heights
                 levelGrid[x][z][1] = med
 
-            i = 0
-            while (i < 3):
-                i += 1
-                j = i - 1
-                for x in xrange(xDest - width - i, xDest + width + i):
-                    for z in xrange(zDest - width - i, zDest + width + i):
-                        if ((x < xDest - width - j) or (x > xDest + width + j - 1)) or ((z < zDest - width - j) or (z > zDest + width + j - 1)):
-                            if (x > 0 and x < len(levelGrid)) and (z > 0 and z < len(levelGrid[0])):
-                                height = getHeight(level, minx + x, minz + z, False)
-                                modify = determineNeighbourHeights(level, minx + x, minz + z, height)
-                                block = level.blockAt(x + minx, height, z + minz)
+        i = 0
+        while (i < 3):
+            i += 1
+            j = i - 1
+            for x in xrange(xDest - width - i, xDest + width + i):
+                for z in xrange(zDest - width - i, zDest + width + i):
+                    if ((x < xDest - width - j) or (x > xDest + width + j - 1)) or ((z < zDest - width - j) or (z > zDest + width + j - 1)):
+                        if (x > 0 and x < len(levelGrid)) and (z > 0 and z < len(levelGrid[0])):
+                            height = getHeight(level, minx + x, minz + z, False)
+                            modify = determineNeighbourHeights(level, minx + x, minz + z, height)
+                            block = level.blockAt(x + minx, height, z + minz)
 
-                                newHeight = getHeight(level, minx + x, minz + z) + modify
-                                levelGrid[x][z][1] = newHeight
-                                while(height < newHeight):
-                                    utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
-                                    height += 1
+                            newHeight = getHeight(level, minx + x, minz + z) + modify
+                            levelGrid[x][z][1] = newHeight
+                            while(height < newHeight):
+                                utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
+                                height += 1
 
-                                while(level.blockAt(x + minx, height, z + minz) != 0) and (height > newHeight):
-                                    utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
-                                    height -= 1
+                            while(level.blockAt(x + minx, height, z + minz) != 0) and (height > newHeight):
+                                utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
+                                height -= 1
 
 def determineNeighbourHeights(level, midX, midZ, height):
     tallyL = 0
@@ -339,10 +345,11 @@ def determineNeighbourHeights(level, midX, midZ, height):
                 if block != 0:
                     tallyH += 1
 
-    if tallyH == tallyL or (tallyH < 2 or tallyL < 2):
+    if tallyH == tallyL or (tallyH < 2 and tallyL < 2):
         return 0
     else:
         return -1 if (tallyL > tallyH) else 1
+
 
 # this function modifies wood, wood planks and stairs to the appropriate wood type based on the biome
 def modifyWoodToSuitBiome(block_data, biome_id):
