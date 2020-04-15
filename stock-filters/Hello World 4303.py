@@ -301,42 +301,48 @@ def levelTerrain(level, levelGrid):
                 # apply the median heights
                 levelGrid[x][z][1] = med
 
-        i = 0
-        while (i < 3):
-            i += 1
-            j = i - 1
-            for x in xrange(xDest - width - i, xDest + width + i):
-                for z in xrange(zDest - width - i, zDest + width + i):
-                    if ((x < xDest - width - j) or (x > xDest + width + j - 1)) or ((z < zDest - width - j) or (z > zDest + width + j - 1)):
-                        if (x > 0 and x < len(levelGrid)) and (z > 0 and z < len(levelGrid[0])):
-                            height = getHeight(level, minx + x, minz + z, False)
-                            modify = determineNeighbourHeights(level, minx + x, minz + z, height)
-                            block = level.blockAt(x + minx, height, z + minz)
+            i = 0
+            while (i < 3):
+                i += 1
+                j = i - 1
+                for x in xrange(xDest - width - i, xDest + width + i):
+                    for z in xrange(zDest - width - i, zDest + width + i):
+                        if ((x < xDest - width - j) or (x > xDest + width + j - 1)) or ((z < zDest - width - j) or (z > zDest + width + j - 1)):
+                            if (x > 0 and x < len(levelGrid)) and (z > 0 and z < len(levelGrid[0])):
+                                height = getHeight(level, minx + x, minz + z, False)
+                                modify = determineNeighbourHeights(level, minx + x, minz + z, height)
+                                block = level.blockAt(x + minx, height, z + minz)
 
-                            newHeight = getHeight(level, minx + x, minz + z) + modify
-                            levelGrid[x][z][1] = newHeight
-                            while(height < newHeight):
-                                utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
-                                height += 1
+                                newHeight = getHeight(level, minx + x, minz + z) + modify
+                                levelGrid[x][z][1] = newHeight
+                                while(height < newHeight):
+                                    utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
+                                    height += 1
 
-                            while(level.blockAt(x + minx, height, z + minz) != 0) and (height > newHeight):
-                                utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
-                                height -= 1
+                                while(level.blockAt(x + minx, height, z + minz) != 0) and (height > newHeight):
+                                    utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
+                                    height -= 1
 
 def determineNeighbourHeights(level, midX, midZ, height):
+    tallyL = 0
+    tallyH = 0
+
     for x in xrange(midX - 1, midX + 1):
         for z in xrange(midZ - 1, midZ + 1):
             block = level.blockAt(x, height, z)
             if block == 0:
                 block = level.blockAt(x , height - 1, z)
                 if block == 0:
-                    return -1  
+                    tallyL += 1
             else:
                 block = level.blockAt(x, height + 1, z)
                 if block != 0:
-                    return 1
+                    tallyH += 1
 
-    return 0
+    if tallyH == tallyL or (tallyH < 2 or tallyL < 2):
+        return 0
+    else:
+        return -1 if (tallyL > tallyH) else 1
 
 # this function modifies wood, wood planks and stairs to the appropriate wood type based on the biome
 def modifyWoodToSuitBiome(block_data, biome_id):
