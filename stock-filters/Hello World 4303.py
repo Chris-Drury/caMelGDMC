@@ -298,17 +298,13 @@ def levelTerrain(level, levelGrid):
                     utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
                     height -= 1
                     
-        # apply the median heights
-        for x in range(xDest - width, xDest + width):
-            for z in range(zDest - width, zDest + width):
+                # apply the median heights
                 levelGrid[x][z][1] = med
 
         i = 0
-        q = 18
         while (i < 3):
             i += 1
             j = i - 1
-            q += 1
             for x in xrange(xDest - width - i, xDest + width + i):
                 for z in xrange(zDest - width - i, zDest + width + i):
                     if ((x < xDest - width - j) or (x > xDest + width + j - 1)) or ((z < zDest - width - j) or (z > zDest + width + j - 1)):
