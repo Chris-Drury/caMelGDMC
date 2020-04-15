@@ -2,10 +2,10 @@
 # Work in Progress
 
 ## The Team:
-Christopher Drury
-Terriah Hansen
-Sheena Ou
-Lauren Whelan
+- Christopher Drury
+- Terriah Hansen
+- Sheena Ou
+- Lauren Whelan
 
 ## Setup
 [This WIKI](http://github.com/mcgreentn/MCAI/wiki) contains all the necessary information to setup the project
