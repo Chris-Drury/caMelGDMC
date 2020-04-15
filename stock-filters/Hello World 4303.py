@@ -91,6 +91,8 @@ def perform(level, box, options):
     print("Generating buildings...")
     bulidBuildings(level, minx, minz)
 
+    print("Done!")
+
 # Apply the levelGrid to the terrain
 def overlayGrid(levelGrid, level):
     global minx, minz
@@ -273,31 +275,6 @@ def levelTerrain(level, levelGrid):
         xDest = location[0]
         zDest = location[1]
         width = location[2] / 2
-
-        i = 0
-        q = 18
-        while (i < 3):
-            i += 1
-            j = i - 1
-            q += 1
-            for x in xrange(xDest - width - i, xDest + width + i):
-                for z in xrange(zDest - width - i, zDest + width + i):
-                    if ((x < xDest - width - j) or (x > xDest + width + j - 1)) or ((z < zDest - width - j) or (z > zDest + width + j - 1)):
-                        if (x > 0 and x < len(levelGrid)) and (z > 0 and z < len(levelGrid[0])):
-                            height = getHeight(level, minx + x, minz + z, False)
-                            modify = determineNeighbourHeights(level, minx + x, minz + z, height)
-                            block = level.blockAt(x + minx, height, z + minz)
-
-                            newHeight = getHeight(level, minx + x, minz + z) + modify
-                            levelGrid[x][z][1] = newHeight
-                            while(height < newHeight):
-                                utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
-                                height += 1
-
-                            while(level.blockAt(x + minx, height, z + minz) != 0) and (height > newHeight):
-                                utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
-                                height -= 1
-                        
         height = location[3]
 
         # remove / add ground as necessary to make the plots look natural
@@ -325,6 +302,30 @@ def levelTerrain(level, levelGrid):
         for x in range(xDest - width, xDest + width):
             for z in range(zDest - width, zDest + width):
                 levelGrid[x][z][1] = med
+
+        i = 0
+        q = 18
+        while (i < 3):
+            i += 1
+            j = i - 1
+            q += 1
+            for x in xrange(xDest - width - i, xDest + width + i):
+                for z in xrange(zDest - width - i, zDest + width + i):
+                    if ((x < xDest - width - j) or (x > xDest + width + j - 1)) or ((z < zDest - width - j) or (z > zDest + width + j - 1)):
+                        if (x > 0 and x < len(levelGrid)) and (z > 0 and z < len(levelGrid[0])):
+                            height = getHeight(level, minx + x, minz + z, False)
+                            modify = determineNeighbourHeights(level, minx + x, minz + z, height)
+                            block = level.blockAt(x + minx, height, z + minz)
+
+                            newHeight = getHeight(level, minx + x, minz + z) + modify
+                            levelGrid[x][z][1] = newHeight
+                            while(height < newHeight):
+                                utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
+                                height += 1
+
+                            while(level.blockAt(x + minx, height, z + minz) != 0) and (height > newHeight):
+                                utilityFunctions.setBlock(level, (0, 0), x + minx, height, z + minz)
+                                height -= 1
 
 def determineNeighbourHeights(level, midX, midZ, height):
     for x in xrange(midX - 1, midX + 1):
