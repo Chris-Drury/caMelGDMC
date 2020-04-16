@@ -1,5 +1,5 @@
 from buildingArrays import BuildingFactory
-from random import randint
+from random import randint, randrange
 import utilityFunctions
 import time
 
@@ -176,13 +176,16 @@ def generateLayout(level, levelGrid):
     xSize = len(levelGrid)
     zSize = len(levelGrid[0])
 
+    c = randrange(35, 60)
+    print("generating %d buildings", c)
+
     # create the first house. For now, always place it in the middle of the plot
     xEnd = xSize / 2
     zEnd = zSize / 2
     generateHousePlot(level, levelGrid, xEnd, zEnd, 3)
 
     # begin branching a creating the rest of the village
-    for houses in range(0,40):
+    for houses in range(0, c - 1):
         # Generate a path of a random length in a random direction
         xEnd, zEnd = generatePath(level, levelGrid, xEnd, zEnd, randint(8, 40),  randint(0, 3))
 
@@ -319,7 +322,7 @@ def levelTerrain(level, levelGrid):
                             modify = determineNeighbourHeights(level, minx + x, minz + z, height)
                             block = level.blockAt(x + minx, height, z + minz)
 
-                            newHeight = getHeight(level, minx + x, minz + z) + modify
+                            newHeight = height + modify
                             levelGrid[x][z][1] = newHeight
                             while(height < newHeight):
                                 utilityFunctions.setBlock(level, (block, 0), x + minx, height, z + minz)
