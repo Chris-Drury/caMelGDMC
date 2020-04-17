@@ -10,7 +10,7 @@ inputs = (
 	("caMel", "label"),
 	)
 
-foliage = [6, 17, 18, 31, 32, 37, 38, 39, 40, 81, 83, 86, 99, 100, 103, 111, 127, 161, 162, 175]
+foliage = [6, 17, 18, 31, 32, 37, 38, 39, 40, 81, 83, 86, 99, 100, 103, 106, 111, 127, 161, 162, 175]
 directions = [[1, 0], [0, 1], [-1, 0], [0, -1]]  # right, up, left, down
 lastDirectionInt = 5 # lets use this so it can never back track...
 buildingLocations = [] # lets define a list of all locations that will need buildings
@@ -226,9 +226,36 @@ def getHeight(level, x, z, house_plot=True):
                 utilityFunctions.setBlock(level, (0, 0), x, y+1, z)
             return y
         elif blockID in foliage and house_plot:
-            utilityFunctions.setBlock(level, (0, 0), x, y, z)
+            clearEnvironmentArea(level, [[x,y,z]])
+            # utilityFunctions.setBlock(level, (0, 0), x, y, z)
 
     return 0
+
+def clearEnvironmentArea(level, neighbours):
+    global maxx, minx, maxz, minz, foliage
+    startx = neighbours[0][0]
+    starty = neighbours[0][1]
+    startz = neighbours[0][2]
+    while len(neighbours) > 0:
+        neighbour = neighbours.pop()
+        if maxx > neighbour[0] > minx and maxz > neighbour[2] > minz\
+                and abs(neighbour[0] - startx) < 6\
+                and abs(neighbour[1] - starty) < 20\
+                and abs(neighbour[2] - startz) < 6 :
+            utilityFunctions.setBlock(level, (0, 0), neighbour[0], neighbour[1], neighbour[2])
+            if level.blockAt(neighbour[0] + 1, neighbour[1], neighbour[2]) in foliage:
+                neighbours.append([neighbour[0] + 1, neighbour[1], neighbour[2]])
+            if level.blockAt(neighbour[0] - 1, neighbour[1], neighbour[2]) in foliage:
+                neighbours.append([neighbour[0] - 1, neighbour[1], neighbour[2]])
+            if level.blockAt(neighbour[0], neighbour[1] + 1, neighbour[2]) in foliage:
+                neighbours.append([neighbour[0], neighbour[1] + 1, neighbour[2]])
+            if level.blockAt(neighbour[0], neighbour[1] - 1, neighbour[2]) in foliage:
+                neighbours.append([neighbour[0], neighbour[1] - 1, neighbour[2]])
+            if level.blockAt(neighbour[0], neighbour[1], neighbour[2] + 1) in foliage:
+                neighbours.append([neighbour[0], neighbour[1], neighbour[2] + 1])
+            if level.blockAt(neighbour[0], neighbour[1], neighbour[2] - 1) in foliage:
+                neighbours.append([neighbour[0], neighbour[1], neighbour[2] - 1])
+
 
 # This will generate the paths, starting from the center of each house plot
 def generatePath(level, levelGrid, xStart, zStart, pathLength, directionInt):
