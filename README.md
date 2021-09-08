@@ -1,5 +1,5 @@
 ### GDMC Entry for COMP4303 by caMel @ Memorial University of Newfoundland
-# Work in Progress
+# Completed and forever forgetten about
 
 ## The Team:
 - Christopher Drury
